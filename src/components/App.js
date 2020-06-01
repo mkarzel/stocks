@@ -1,5 +1,5 @@
 import React from 'react';
-import Overview from './Overview'
+import Overview from './Overview';
 
 const App = () => {
   return (
