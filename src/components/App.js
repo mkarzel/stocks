@@ -1,10 +1,10 @@
 import React from 'react';
-import Overview from './Overview';
+import CompaniesList from './CompaniesList';
 
 const App = () => {
   return (
     <div>
-        <Overview/>
+        <CompaniesList/>
     </div>
   );
 }
