@@ -8,6 +8,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { VariableSizeList } from 'react-window';
 import { Typography } from '@material-ui/core';
+import CompanyInfo from './CompanyInfo';
 
 const LISTBOX_PADDING = 8; // px
 
@@ -124,21 +125,35 @@ const Overview = () => {
   }, [url]);
 
   const classes = useStyles();
+  const [symbol, setSymbol] = useState(null);
+  const [details, setDetails] = useState(false);
 
   return (
-    <div>{companies &&
-      <Autocomplete
-        id="virtualizedCompaniesList"
-        style={{ width: '25vw' }}
-        disableListWrap
-        classes={classes}
-        ListboxComponent={ListboxComponent}
-        renderGroup={renderGroup}
-        options={companies.map((option) => `${option.description} (${option.symbol})` )}
-        renderInput={(params) => <TextField {...params} variant="outlined" label="COMPANY" />}
-        renderOption={(option) => <Typography noWrap>{option}</Typography>}
-      />
-    }
+    <div>
+      {companies &&
+        <Autocomplete
+          onChange={(event, symbol) => {
+            if (symbol) {
+              setSymbol(symbol.match(/\(([^)]+)\)/)[1]);
+              setDetails(true);
+            }
+            else {
+              setSymbol(null);
+              setDetails(false);
+            }
+          }}
+          id="virtualizedCompaniesList"
+          style={{ width: '25vw' }}
+          disableListWrap
+          classes={classes}
+          ListboxComponent={ListboxComponent}
+          renderGroup={renderGroup}
+          options={companies.map((option) => `${option.description} (${option.symbol})`)}
+          renderInput={(params) => <TextField {...params} variant="outlined" label="COMPANY" />}
+          renderOption={(option) => <Typography noWrap>{option}</Typography>}
+        />
+      }
+      {details && <CompanyInfo symbol={symbol}/>}
     </div>
   );
 }
