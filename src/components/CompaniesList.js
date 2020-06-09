@@ -12,7 +12,7 @@ import CompanyInfo from './CompanyInfo';
 
 const LISTBOX_PADDING = 8; // px
 
-function renderRow(props) {
+const renderRow = (props) => {
   const { data, index, style } = props;
   return React.cloneElement(data[index], {
     style: {
@@ -106,6 +106,11 @@ const useStyles = makeStyles({
   },
 });
 
+const mainContainer = {
+  display: 'flex',
+  justifyContent: 'center',
+}
+
 const Overview = () => {
 
   const token = `br9d4a7rh5rbhn690a50`
@@ -130,30 +135,32 @@ const Overview = () => {
 
   return (
     <div>
-      {companies &&
-        <Autocomplete
-          onChange={(event, symbol) => {
-            if (symbol) {
-              setSymbol(symbol.match(/\(([^)]+)\)/)[1]);
-              setDetails(true);
-            }
-            else {
-              setSymbol(null);
-              setDetails(false);
-            }
-          }}
-          id="virtualizedCompaniesList"
-          style={{ width: '25vw' }}
-          disableListWrap
-          classes={classes}
-          ListboxComponent={ListboxComponent}
-          renderGroup={renderGroup}
-          options={companies.map((option) => `${option.description} (${option.symbol})`)}
-          renderInput={(params) => <TextField {...params} variant="outlined" label="COMPANY" />}
-          renderOption={(option) => <Typography noWrap>{option}</Typography>}
-        />
-      }
-      {details && <CompanyInfo symbol={symbol}/>}
+      <div style={mainContainer}>
+        {companies &&
+          <Autocomplete
+            onChange={(event, symbol) => {
+              if (symbol) {
+                setSymbol(symbol.match(/\(([^)]+)\)/)[1]);
+                setDetails(true);
+              }
+              else {
+                setSymbol(null);
+                setDetails(false);
+              }
+            }}
+            id="virtualizedCompaniesList"
+            style={{ width: '600px', margin: '20px' }}
+            disableListWrap
+            classes={classes}
+            ListboxComponent={ListboxComponent}
+            renderGroup={renderGroup}
+            options={companies.map((option) => `${option.description} (${option.symbol})`)}
+            renderInput={(params) => <TextField {...params} variant="outlined" label="COMPANY" />}
+            renderOption={(option) => <Typography noWrap>{option}</Typography>}
+          />
+        }
+      </div>
+      {details && <CompanyInfo symbol={symbol} />}
     </div>
   );
 }

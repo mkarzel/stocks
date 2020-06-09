@@ -19,12 +19,18 @@ const CompanyInfo = (props) => {
         })();
     }, [url, props.symbol]);
 
-    if (info)
-        console.log(info)
     return (
         <div>
             {info &&
-                <div>{props.symbol} {info.c} USD {(info.c - info.o).toFixed(2)} {(((info.c - info.o) / info.c) * 100).toFixed(2)}%</div>
+                <div>
+                    <div style={{fontSize: '20pt', display: 'flex', justifyContent: 'center'}}>{(info.c).toFixed(2)} USD</div>
+                    {(info.c - info.o > 0) &&
+                        <div style={{ color: 'green', fontSize: '20pt', display: 'flex', justifyContent: 'center' }}>{(info.c - info.o).toFixed(2)} {(((info.c - info.o) / info.c) * 100).toFixed(2)}%</div>
+                    }
+                    {(info.c - info.o < 0) &&
+                        <div style={{ color: 'red', fontSize: '20pt', display: 'flex', justifyContent: 'center' }}>{(info.c - info.o).toFixed(2)} {(((info.c - info.o) / info.c) * 100).toFixed(2)}%</div>
+                    }
+                </div>
             }
         </div>
     );
